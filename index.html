@@ -13,16 +13,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#eff8ff',
-                            100: '#d9efff',
-                            200: '#b9e2ff',
-                            300: '#7cc8ff',
-                            400: '#2da8ff',
-                            500: '#0787e8',
-                            600: '#006bc2',
-                            700: '#00549b',
-                            800: '#06457d',
-                            900: '#0a3964',
+                            50: '#fbffe8',
+                            100: '#f2ffb3',
+                            200: '#e6ff66',
+                            300: '#d4f52c',
+                            400: '#c9f227',
+                            500: '#a9d916',
+                            600: '#7da900',
+                            700: '#648700',
+                            800: '#4b6800',
+                            900: '#334900',
                         },
                         darkbg: '#0F172A',
                         darkcard: '#1E293B',
@@ -52,6 +52,16 @@
             scroll-behavior: smooth;
             font-family: 'Inter', sans-serif;
         }
+        .gold-shine {
+            background: linear-gradient(135deg, #fff4a3 0%, #f5c842 38%, #fff1a0 55%, #c99417 100%);
+        }
+        @keyframes preloader-progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        .preloader-progress {
+            animation: preloader-progress 15s linear forwards;
+        }
         /* Hide scrollbars for slick mobile app look */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -78,9 +88,23 @@
         .fp-pulse {
             animation: pulse-ring 2s infinite;
         }
+        .keypad-btn {
+            min-height: 52px;
+            border-radius: 1rem;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 1.05rem;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .keypad-btn:active {
+            transform: scale(0.98);
+            background: linear-gradient(180deg, #ecfdf5 0%, #dcfce7 100%);
+        }
     </style>
 </head>
-<body class="bg-blue-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex justify-center items-center font-sans antialiased selection:bg-brand-400 selection:text-black">
+<body class="bg-lime-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex justify-center items-center font-sans antialiased selection:bg-brand-400 selection:text-black">
 
     <!-- Preloader -->
     <div id="preloader" class="fixed inset-0 z-50 bg-slate-900 flex flex-col justify-center items-center transition-opacity duration-500">
@@ -88,8 +112,11 @@
             <div class="w-20 h-20 rounded-full border-4 border-brand-400/20 border-t-brand-400 animate-spin"></div>
             <div class="absolute font-extrabold text-2xl tracking-wider text-brand-400">V</div>
         </div>
-        <h1 class="mt-6 text-2xl font-black text-white tracking-wider">V PAY<span class="text-brand-400">.</span></h1>
-        <p class="text-slate-400 text-xs mt-1 font-medium tracking-widest lowercase">Beyond Banking Solutions.....</p>
+        <h1 class="mt-6 text-3xl font-black text-white tracking-wider">V PAY<span class="text-brand-400">.</span></h1>
+        <p class="text-brand-300 text-xs mt-2 font-bold tracking-widest uppercase">V PAY is loading</p>
+        <div class="w-52 h-1.5 bg-slate-700 rounded-full overflow-hidden mt-5">
+            <div class="preloader-progress h-full bg-brand-400 rounded-full"></div>
+        </div>
     </div>
 
     <!-- App Container (Mobile View Frame) -->
@@ -140,13 +167,17 @@
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Phone Number</label>
                             <div class="relative">
                                 <span class="absolute left-3.5 top-3.5 text-sm font-semibold text-slate-400">+234</span>
-                                <input type="tel" id="regPhone" maxlength="10" placeholder="801 234 5678" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-16 pr-4 text-slate-900 dark:text-white focus:outline-none focus:border-brand-400 text-sm font-medium">
+                                <input type="tel" id="regPhone" maxlength="10" inputmode="numeric" pattern="\d*" placeholder="801 234 5678" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-16 pr-4 text-slate-900 dark:text-white focus:outline-none focus:border-brand-400 text-sm font-medium">
                             </div>
                         </div>
 
                         <button onclick="triggerPhoneOTP()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
                             Send Verification Code
                         </button>
+
+                        <div class="text-center text-[10px] text-slate-500 dark:text-slate-400">
+                            Demo OTP is shown in the notification toast for testing.
+                        </div>
 
                         <div class="text-center pt-3">
                             <span class="text-xs text-slate-500">Already registered? </span>
@@ -175,8 +206,9 @@
                     <div class="space-y-3">
                         <div>
                             <label id="idNumberLabel" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Enter National Identity Number (NIN)</label>
-                            <input type="text" id="idNumberInput" maxlength="11" placeholder="12345678901" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-slate-900 dark:text-white focus:outline-none focus:border-brand-400 text-sm font-semibold tracking-wider">
-                            <p class="text-[10px] text-slate-400 mt-1">Must be exactly 11 numeric digits.</p>
+                            <input type="text" id="idNumberInput" maxlength="11" inputmode="numeric" pattern="\d*" placeholder="12345678901" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-slate-900 dark:text-white focus:outline-none focus:border-brand-400 text-sm font-semibold tracking-wider">
+                            <p class="text-[10px] text-slate-400 mt-1">Must be exactly 11 numeric digits and match an enrolled identity record.</p>
+                            <button type="button" onclick="fillDemoIdentity()" class="text-[10px] font-bold text-brand-600 dark:text-brand-300 hover:underline mt-1">Use enrolled demo number</button>
                         </div>
 
                         <button onclick="verifyIdentity()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
@@ -202,6 +234,7 @@
                         <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-center space-y-3">
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400">Live Facial Verification</label>
                             <div class="relative w-32 h-32 mx-auto rounded-full bg-slate-200 dark:bg-slate-700 border-2 border-dashed border-brand-400 overflow-hidden flex items-center justify-center">
+                                <video id="faceCamera" class="absolute inset-0 w-full h-full object-cover hidden" autoplay muted playsinline></video>
                                 <i class="fa-solid fa-user text-4xl text-slate-400"></i>
                                 <!-- Scanning Animation Line -->
                                 <div id="faceScannerLine" class="absolute left-0 right-0 h-1 bg-brand-400 shadow-lg shadow-brand-400 scan-line hidden"></div>
@@ -209,6 +242,7 @@
                                     <i class="fa-solid fa-check-circle"></i>
                                 </div>
                             </div>
+                            <p id="cameraStatus" class="text-[10px] text-slate-400">Camera access is requested only when you start verification.</p>
                             <button id="startScanBtn" type="button" onclick="simulatedFaceScan()" class="text-xs font-bold text-brand-600 dark:text-brand-400 border border-brand-400/40 px-3 py-1.5 rounded-lg hover:bg-brand-400/10 transition">
                                 <i class="fa-solid fa-camera mr-1"></i> Scan Face Now
                             </button>
@@ -230,12 +264,12 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Create 6-Digit Login PIN</label>
-                            <input type="password" id="createLoginPin" maxlength="6" pattern="\d*" placeholder="••••••" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-lg font-bold focus:outline-none focus:border-brand-400">
+                            <input type="password" id="createLoginPin" maxlength="6" inputmode="numeric" pattern="\d*" placeholder="••••••" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-lg font-bold focus:outline-none focus:border-brand-400">
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Create 4-Digit Transaction PIN</label>
-                            <input type="password" id="createTxPin" maxlength="4" pattern="\d*" placeholder="••••" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-lg font-bold focus:outline-none focus:border-brand-400">
+                            <input type="password" id="createTxPin" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="••••" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-lg font-bold focus:outline-none focus:border-brand-400">
                         </div>
 
                         <button onclick="finalizeRegistration()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
@@ -269,7 +303,14 @@
                 <!-- PIN Login Form -->
                 <div id="loginPinForm" class="space-y-4">
                     <div>
-                        <input type="password" id="loginPinInput" maxlength="6" pattern="\d*" placeholder="••••••" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3.5 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-xl font-bold focus:outline-none focus:border-brand-400">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Phone Number</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-3.5 text-sm font-semibold text-slate-400">+234</span>
+                            <input type="tel" id="loginPhoneInput" maxlength="10" inputmode="numeric" pattern="\d*" placeholder="801 234 5678" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-16 pr-4 text-slate-900 dark:text-white focus:outline-none focus:border-brand-400 text-sm font-medium">
+                        </div>
+                    </div>
+                    <div>
+                        <input type="password" id="loginPinInput" maxlength="6" inputmode="numeric" pattern="\d*" placeholder="••••••" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3.5 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-xl font-bold focus:outline-none focus:border-brand-400">
                     </div>
                     <button onclick="attemptPinLogin()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
                         Login
@@ -304,9 +345,15 @@
                             <h3 id="dashUserName" class="text-base font-bold text-slate-900 dark:text-white">Valued Customer</h3>
                         </div>
                     </div>
-                    <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-500 transition">
-                        <i class="fa-solid fa-right-from-bracket text-base"></i>
-                    </button>
+                    <div class="flex items-center space-x-3">
+                        <span id="accountStatusBadge" class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-bold">Active</span>
+                        <button onclick="showScreen('profileScreen')" class="text-xs text-slate-400 hover:text-brand-600 transition" title="View profile">
+                            <i class="fa-solid fa-user-circle text-lg"></i>
+                        </button>
+                        <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-500 transition" title="Log out">
+                            <i class="fa-solid fa-right-from-bracket text-base"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Main Balance & Account Card -->
@@ -321,8 +368,8 @@
                     </div>
 
                     <div class="flex items-baseline space-x-1 my-1">
-                        <span class="text-lg font-bold text-brand-400">$</span>
-                        <h2 id="dashBalanceDisplay" class="text-3xl font-extrabold tracking-tight">5,000,000,.00</h2>
+                        <span class="text-lg font-bold text-brand-400">₦</span>
+                        <h2 id="dashBalanceDisplay" class="text-3xl font-extrabold tracking-tight">5,000.00</h2>
                     </div>
 
                     <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs">
@@ -339,9 +386,35 @@
                             + Add Money
                         </button>
                     </div>
+
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-[10px] text-slate-300">
+                        <div class="bg-white/5 rounded-xl p-2">
+                            <span class="block text-slate-400 uppercase tracking-wider">Branch</span>
+                            <span id="branchDisplay" class="font-semibold mt-1 block">Victoria Island</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-2">
+                            <span class="block text-slate-400 uppercase tracking-wider">Card</span>
+                            <span id="cardDisplay" class="font-semibold mt-1 block">•••• 0001</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Quick Action Buttons Grid -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-3 border border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-500">
+                        <span>Account type</span>
+                        <span id="accountTypeLabel" class="font-bold text-slate-800 dark:text-slate-200">Savings</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-500">
+                        <span>Daily transfer limit</span>
+                        <span id="dailyLimitLabel" class="font-bold text-brand-600 dark:text-brand-300">₦500,000</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div id="bankOverviewGrid" class="grid grid-cols-2 gap-2"></div>
+                </div>
+
                 <div class="space-y-2">
                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">Quick Services</h4>
                     <div class="grid grid-cols-4 gap-3">
@@ -350,6 +423,13 @@
                                 <i class="fa-solid fa-paper-plane"></i>
                             </div>
                             <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-300">Transfer</span>
+                        </button>
+
+                        <button onclick="showScreen('statementScreen')" class="flex flex-col items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-400/10 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition active:scale-95">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg mb-1.5">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-300">Statement</span>
                         </button>
 
                         <button onclick="showScreen('airtimeDataScreen')" class="flex flex-col items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-400/10 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition active:scale-95">
@@ -372,7 +452,44 @@
                             </div>
                             <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-300">History</span>
                         </button>
+
+                        <button onclick="showScreen('financeHub')" class="flex flex-col items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-400/10 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition active:scale-95">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-500 flex items-center justify-center text-lg mb-1.5">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-300">Finance</span>
+                        </button>
                     </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Smart Insights</h4>
+                        <button onclick="renderInsightsSummary(true)" class="text-[10px] font-bold text-brand-600 dark:text-brand-400 hover:underline">Refresh</button>
+                    </div>
+                    <div id="insightsSummary" class="grid grid-cols-2 gap-2"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Wallet & Goals</h4>
+                    </div>
+                    <div id="walletCardsPanel" class="space-y-2"></div>
+                    <div id="goalsPanel" class="space-y-2"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Portfolio</h4>
+                    </div>
+                    <div id="portfolioPanel" class="space-y-2"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Saved Beneficiaries</h4>
+                    </div>
+                    <div id="beneficiariesPanel" class="space-y-2"></div>
                 </div>
 
                 <!-- Recent Activity Overview -->
@@ -386,6 +503,27 @@
                     </div>
                 </div>
 
+            </section>
+
+            <!-- ================= PROFILE SCREEN ================= -->
+            <section id="profileScreen" class="space-y-5 hidden pb-20">
+                <div class="flex items-center space-x-3">
+                    <button onclick="showScreen('dashboardHub')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                    </button>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">My Profile</h2>
+                </div>
+                <div class="text-center py-3">
+                    <div id="profileAvatar" class="w-20 h-20 rounded-full gold-shine text-slate-950 font-black text-2xl mx-auto flex items-center justify-center shadow-lg">VP</div>
+                    <h3 id="profileName" class="text-xl font-bold text-slate-900 dark:text-white mt-3">V PAY Customer</h3>
+                    <p id="profilePhone" class="text-xs text-slate-500 dark:text-slate-400 mt-1"></p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 space-y-4 border border-slate-100 dark:border-slate-800">
+                    <div class="flex justify-between text-sm"><span class="text-slate-500">Account number</span><span id="profileAccountNumber" class="font-mono font-bold text-slate-900 dark:text-white"></span></div>
+                    <div class="flex justify-between text-sm"><span class="text-slate-500">Bank</span><span class="font-bold text-slate-900 dark:text-white">V PAY</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-slate-500">Currency</span><span class="font-bold text-brand-600 dark:text-brand-300">Naira (₦)</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-slate-500">Identity status</span><span class="font-bold text-emerald-500">Verified</span></div>
+                </div>
             </section>
 
             <!-- ================= TRANSFER MONEY SCREEN ================= -->
@@ -409,7 +547,8 @@
                     <!-- Account Number Field -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Account Number</label>
-                        <input type="text" id="transferAccNo" maxlength="10" placeholder="10 Digit Account Number" oninput="simulateAccountLookup()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-brand-400">
+                        <input type="text" id="transferAccNo" maxlength="10" inputmode="numeric" pattern="\d*" placeholder="10 Digit Account Number" oninput="simulateAccountLookup()" onblur="simulateAccountLookup()" class="numeric-input w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-brand-400">
+                        <p class="text-[10px] text-slate-400 mt-1">Try account number <button type="button" onclick="fillDemoRecipient()" class="font-bold text-brand-600 dark:text-brand-300 hover:underline">7000000002</button></p>
                         <!-- Recipient Name Preview -->
                         <div id="recipientLookupBox" class="mt-2 text-xs text-brand-600 dark:text-brand-400 font-bold hidden flex items-center space-x-1">
                             <i class="fa-solid fa-circle-check"></i>
@@ -419,8 +558,8 @@
 
                     <!-- Amount Field -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Amount ($)</label>
-                        <input type="number" id="transferAmount" placeholder="0.00" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-brand-400">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Amount (₦)</label>
+                        <input type="number" id="transferAmount" inputmode="numeric" pattern="\d*" placeholder="0.00" class="numeric-input w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-brand-400">
                     </div>
 
                     <!-- Narration -->
@@ -567,6 +706,89 @@
                 </div>
             </section>
 
+            <!-- ================= BANK STATEMENT SCREEN ================= -->
+            <section id="financeHub" class="space-y-4 hidden pb-20">
+                <div class="flex items-center space-x-3">
+                    <button onclick="showScreen('dashboardHub')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                    </button>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Smart Finance</h2>
+                </div>
+
+                <div class="bg-gradient-to-br from-cyan-600 via-sky-600 to-indigo-700 text-white rounded-2xl p-4 shadow-xl">
+                    <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-cyan-100">
+                        <span>Portfolio Health</span>
+                        <span id="financeHealthStatus">Excellent</span>
+                    </div>
+                    <div class="mt-3 flex items-end justify-between">
+                        <div>
+                            <p class="text-[10px] text-cyan-100/80">Net cash flow</p>
+                            <p id="financeCashFlow" class="text-2xl font-black mt-1">₦0.00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-cyan-100/80">Savings rate</p>
+                            <p class="text-sm font-bold">18.4%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">FX Rates</h4>
+                    <div id="fxRatesPanel" class="space-y-2"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">Loan Offers</h4>
+                    <div id="loanOffersPanel" class="space-y-2"></div>
+                </div>
+            </section>
+
+            <section id="statementScreen" class="space-y-4 hidden pb-20">
+                <div class="flex items-center space-x-3">
+                    <button onclick="showScreen('dashboardHub')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                    </button>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Account Statement</h2>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-2xl p-4 shadow-xl">
+                    <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-300">
+                        <span>Statement</span>
+                        <span id="statementMonthLabel">This month</span>
+                    </div>
+                    <div class="mt-3 flex items-end justify-between">
+                        <div>
+                            <p class="text-[10px] text-slate-400">Current balance</p>
+                            <p id="statementBalance" class="text-2xl font-black mt-1">₦0.00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400">Account</p>
+                            <p id="statementAccNo" class="font-mono text-sm font-bold">0000000000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="statementList" class="space-y-2"></div>
+            </section>
+
+            <!-- ================= TRANSFER SUCCESS SCREEN ================= -->
+            <section id="transferSuccessScreen" class="hidden min-h-full flex flex-col items-center justify-center text-center space-y-5 py-12">
+                <div class="w-28 h-28 rounded-full bg-brand-400/15 border-4 border-brand-400 flex items-center justify-center shadow-lg shadow-brand-400/20">
+                    <i class="fa-solid fa-check text-6xl text-brand-600 dark:text-brand-300"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Successful</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Your transfer has been completed.</p>
+                </div>
+                <div class="w-full gold-shine rounded-2xl p-4 text-left shadow-lg">
+                    <p class="text-[10px] uppercase font-bold text-slate-800/70">Amount sent</p>
+                    <p id="successAmount" class="text-2xl font-black text-slate-950">₦0.00</p>
+                    <p id="successRecipient" class="text-xs font-semibold text-slate-800/80 mt-1"></p>
+                    <p id="successReference" class="text-[10px] font-mono text-slate-800/70 mt-2"></p>
+                </div>
+                <button onclick="showScreen('dashboardHub')" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 transition">Back to Dashboard</button>
+            </section>
+
         </main>
 
         <!-- Bottom Navigation Bar (Visible when Logged In) -->
@@ -605,11 +827,28 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2 text-center">Enter 4-Digit Transaction PIN</label>
-                    <input type="password" id="txPinAuthInput" maxlength="4" pattern="\d*" placeholder="••••" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.6em] text-slate-900 dark:text-white text-2xl font-bold focus:outline-none focus:border-brand-400">
+                    <input type="password" id="txPinAuthInput" maxlength="4" inputmode="numeric" pattern="\d*" placeholder="••••" class="numeric-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.6em] text-slate-900 dark:text-white text-2xl font-bold focus:outline-none focus:border-brand-400">
                 </div>
 
                 <button onclick="executePendingTransaction()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
                     Authorize & Pay
+                </button>
+            </div>
+        </div>
+
+        <!-- OTP VERIFICATION MODAL -->
+        <div id="otpModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+            <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 border border-slate-100 dark:border-slate-800">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Verify Phone Number</h3>
+                    <button onclick="closeOtpModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 text-center">Enter the 6-digit code sent to your phone.</p>
+                <div>
+                    <input type="text" id="otpInput" maxlength="6" inputmode="numeric" pattern="\d*" placeholder="123456" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 text-center tracking-[0.5em] text-slate-900 dark:text-white text-xl font-bold focus:outline-none focus:border-brand-400">
+                </div>
+                <button onclick="verifyOtp()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
+                    Confirm Code
                 </button>
             </div>
         </div>
@@ -622,12 +861,59 @@
                     <button onclick="closeDepositModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Deposit Amount ($)</label>
-                    <input type="number" id="depositAmountInput" placeholder="1000.00" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-brand-400">
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Deposit Amount (₦)</label>
+                    <input type="number" id="depositAmountInput" inputmode="numeric" pattern="\d*" placeholder="1000.00" class="numeric-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-brand-400">
                 </div>
                 <button onclick="executeDeposit()" class="w-full bg-brand-400 hover:bg-brand-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-brand-400/20 active:scale-[0.98] transition">
                     Instant Add Money
                 </button>
+            </div>
+        </div>
+
+        <!-- TRANSACTION DETAILS MODAL -->
+        <div id="transactionDetailModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+            <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 space-y-4 border border-slate-100 dark:border-slate-800">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Transaction Details</h3>
+                    <button onclick="closeTransactionDetails()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="text-center py-2">
+                    <div id="detailStatusIcon" class="w-14 h-14 rounded-full mx-auto flex items-center justify-center text-xl"></div>
+                    <p id="detailTitle" class="text-lg font-bold text-slate-900 dark:text-white mt-3"></p>
+                    <p id="detailAmount" class="text-2xl font-black text-brand-600 dark:text-brand-300 mt-1"></p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-xs space-y-3">
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Status</span><span id="detailStatus" class="font-bold text-emerald-500">Successful</span></div>
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Date</span><span id="detailDate" class="font-semibold text-right text-slate-700 dark:text-slate-200"></span></div>
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Reference</span><span id="detailReference" class="font-mono font-semibold text-right text-slate-700 dark:text-slate-200"></span></div>
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Description</span><span id="detailDescription" class="font-semibold text-right text-slate-700 dark:text-slate-200"></span></div>
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Sender</span><span id="detailSender" class="font-semibold text-right text-slate-700 dark:text-slate-200"></span></div>
+                    <div class="flex justify-between gap-4"><span class="text-slate-500">Receiver</span><span id="detailReceiver" class="font-semibold text-right text-slate-700 dark:text-slate-200"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOM NUMBER KEYPAD -->
+        <div id="numericKeypad" class="fixed inset-x-0 bottom-0 z-[60] bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 rounded-t-3xl shadow-2xl hidden">
+            <div class="max-w-md mx-auto">
+                <div class="flex items-center justify-between mb-3">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Number keypad</p>
+                    <button onclick="hideNumericKeypad()" class="text-slate-500 dark:text-slate-300 text-xs font-bold">Done</button>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="keypad-btn keypad-digit" data-value="1">1</button>
+                    <button class="keypad-btn keypad-digit" data-value="2">2</button>
+                    <button class="keypad-btn keypad-digit" data-value="3">3</button>
+                    <button class="keypad-btn keypad-digit" data-value="4">4</button>
+                    <button class="keypad-btn keypad-digit" data-value="5">5</button>
+                    <button class="keypad-btn keypad-digit" data-value="6">6</button>
+                    <button class="keypad-btn keypad-digit" data-value="7">7</button>
+                    <button class="keypad-btn keypad-digit" data-value="8">8</button>
+                    <button class="keypad-btn keypad-digit" data-value="9">9</button>
+                    <button class="keypad-btn keypad-clear" data-action="clear">Clear</button>
+                    <button class="keypad-btn keypad-digit" data-value="0">0</button>
+                    <button class="keypad-btn keypad-backspace" data-action="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                </div>
             </div>
         </div>
 
@@ -643,14 +929,49 @@
     <script>
         // List of Comprehensive Nigerian Banks
         const NIGERIAN_BANKS = [
-            "Access Bank", "Accion Microfinance Bank", "Carbon", "Citibank Nigeria", "Ecobank Nigeria",
-            "Fidelity Bank", "First Bank of Nigeria", "First City Monument Bank (FCMB)", "Globus Bank",
-            "Guaranty Trust Bank (GTBank)", "Heritage Bank", "Jaiz Bank", "Keystone Bank", "Kuda Bank",
-            "Moniepoint Microfinance Bank", "OPay", "Palmpay", "Parallex Bank", "Polaris Bank",
-            "Providus Bank", "Rubies Bank", "Stanbic IBTC Bank", "Standard Chartered Bank", "Sterling Bank",
-            "SunTrust Bank", "TajBank", "Titan Trust Bank", "Union Bank of Nigeria", "United Bank for Africa (UBA)",
-            "Unity Bank", "VFD Microfinance Bank", "Wema Bank", "Zenith Bank"
+            "Access Bank", "Addosser Microfinance Bank", "Advans La Fayette Microfinance Bank", "Aeigis Microfinance Bank",
+            "Allianz Nigeria Insurance Bank", "Amju Unique Microfinance Bank", "Baobab Microfinance Bank", "Bowen Microfinance Bank",
+            "Carbon", "Covenant Microfinance Bank", "Citibank Nigeria", "Ecobank Nigeria", "Eyowo Microfinance Bank",
+            "Fidelity Bank", "First Bank of Nigeria", "First City Monument Bank (FCMB)", "Finca Microfinance Bank",
+            "Globus Bank", "GoMoney Microfinance Bank", "Guaranty Trust Bank (GTBank)", "Hasal Microfinance Bank",
+            "Heritage Bank", "Infinity Trust Mortgage Bank", "Jaiz Bank", "Keystone Bank", "Kuda Bank",
+            "Lapo Microfinance Bank", "Lotus Bank", "Mainstreet Microfinance Bank", "Mintyn Microfinance Bank",
+            "Moniepoint Microfinance Bank", "Mutual Trust Microfinance Bank", "NPF Microfinance Bank", "Nova Merchant Bank",
+            "O3 Capital Microfinance Bank", "OPay", "Optimus Bank", "Palmpay", "Parallex Bank", "Parkway Microfinance Bank",
+            "Polaris Bank", "PremiumTrust Bank", "Providus Bank", "Rand Merchant Bank", "Rubies Bank", "Safe Haven MFB",
+            "Sparkle Microfinance Bank", "Stanbic IBTC Bank", "Standard Chartered Bank", "Sterling Bank", "SunTrust Bank",
+            "TajBank", "Tanadi Microfinance Bank", "Titan Trust Bank", "Union Bank of Nigeria", "United Bank for Africa (UBA)",
+            "Unity Bank", "VFD Microfinance Bank", "Wema Bank", "Zenith Bank", "V PAY"
         ];
+
+        const ACCOUNT_NUMBERS = Array.from({ length: 500 }, (_, index) => `70${String(index + 1).padStart(8, '0')}`);
+        const CUSTOMER_FIRST_NAMES = [
+            "Adebayo", "Adaeze", "Adanna", "Ahmed", "Amaka", "Amina", "Anita", "Anthony", "Blessing", "Chiamaka",
+            "Chibueze", "Chidera", "Chinedu", "Chinonso", "Chisom", "Daniel", "David", "Deborah", "Damilola", "Efe",
+            "Emeka", "Emmanuel", "Esther", "Fatima", "Favour", "Folake", "Gbenga", "Grace", "Hadiza", "Hauwa",
+            "Ibrahim", "Ifeanyi", "Ifeoma", "Ikenna", "Janet", "Joseph", "Joy", "Kelechi", "Khadijah", "Kunle",
+            "Lilian", "Mariam", "Mary", "Micheal", "Miriam", "Munachi", "Nana", "Ngozi", "Nkem", "Nonso",
+            "Obinna", "Ogechi", "Oghenekaro", "Olamide", "Olumide", "Onyinye", "Peter", "Precious", "Rasheed", "Rebecca",
+            "Samuel", "Sandra", "Seun", "Shola", "Simeon", "Sophia", "Taiwo", "Tayo", "Uche", "Uchenna",
+            "Victor", "Victoria", "Yusuf", "Zainab"
+        ];
+        const CUSTOMER_LAST_NAMES = [
+            "Adeyemi", "Afolabi", "Ajayi", "Akande", "Akinola", "Akinyemi", "Aliyu", "Anyanwu", "Bello", "Chukwu",
+            "Eze", "Ezeh", "Ezenwa", "Ezeani", "Ibe", "Ibrahim", "Ifeanyi", "Ike", "James", "Johnson",
+            "Kalu", "Lawal", "Madu", "Mohammed", "Nwachukwu", "Nwankwo", "Nwosu", "Obi", "Oduro", "Okafor",
+            "Okeke", "Okoro", "Oladele", "Olawale", "Olowu", "Oni", "Onu", "Osagie", "Oyebanji", "Oyetunde",
+            "Salami", "Sani", "Sule", "Taiwo", "Udo", "Ukah", "Umeh", "Usman", "Yakubu", "Yusuf"
+        ];
+        const IDENTITY_RECORDS = {
+            NIN: Array.from({ length: 500 }, (_, index) => `70${String(1234567 + index).padStart(9, '0')}`),
+            BVN: Array.from({ length: 500 }, (_, index) => `22${String(1234567 + index).padStart(9, '0')}`)
+        };
+        const ACCOUNT_DIRECTORY = ACCOUNT_NUMBERS.reduce((directory, number, index) => {
+            const firstName = CUSTOMER_FIRST_NAMES[index % CUSTOMER_FIRST_NAMES.length];
+            const lastName = CUSTOMER_LAST_NAMES[Math.floor(index / CUSTOMER_FIRST_NAMES.length) % CUSTOMER_LAST_NAMES.length];
+            directory[number] = { name: `${firstName} ${lastName}`, bank: "V PAY" };
+            return directory;
+        }, {});
 
         // Telco Data Packages
         const DATA_PLANS = {
@@ -694,6 +1015,8 @@
             ]
         };
 
+        const API_BASE = 'http://localhost:3001';
+
         // Application Global State
         let currentUser = null;
         let selectedIdType = "NIN";
@@ -702,6 +1025,8 @@
         let selectedTvProvider = "GOTV";
         let isBalanceHidden = false;
         let activeUtilityTab = "airtime";
+        let faceSnapshot = null;
+        let activeNumericInput = null;
 
         // Pending Transaction Details for PIN Authorization
         let pendingTx = null;
@@ -712,13 +1037,69 @@
                 const preloader = document.getElementById('preloader');
                 preloader.classList.add('opacity-0');
                 setTimeout(() => preloader.style.display = 'none', 500);
-            }, 1000);
+            }, 15000);
 
+            initializeNumericKeypad();
             populateBanks();
             populateDataPlans();
             populateTvPackages();
             loadUserData();
         };
+
+        function initializeNumericKeypad() {
+            document.querySelectorAll('.numeric-input').forEach((input) => {
+                input.setAttribute('inputmode', 'numeric');
+                input.setAttribute('pattern', '\\d*');
+                input.addEventListener('focus', () => {
+                    activeNumericInput = input;
+                    document.getElementById('numericKeypad').classList.remove('hidden');
+                });
+                input.addEventListener('input', () => {
+                    input.value = input.value.replace(/\D/g, '');
+                    if (input.maxLength && input.value.length > Number(input.maxLength)) {
+                        input.value = input.value.slice(0, Number(input.maxLength));
+                    }
+                });
+            });
+
+            document.querySelectorAll('.keypad-digit').forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (!activeNumericInput) return;
+                    const maxLength = Number(activeNumericInput.maxLength || 999);
+                    if (activeNumericInput.value.length < maxLength) {
+                        activeNumericInput.value += button.dataset.value;
+                    }
+                    activeNumericInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    activeNumericInput.focus();
+                });
+            });
+
+            document.querySelectorAll('.keypad-backspace').forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (!activeNumericInput) return;
+                    activeNumericInput.value = activeNumericInput.value.slice(0, -1);
+                    activeNumericInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    activeNumericInput.focus();
+                });
+            });
+
+            document.querySelectorAll('.keypad-clear').forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (!activeNumericInput) return;
+                    activeNumericInput.value = '';
+                    activeNumericInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    activeNumericInput.focus();
+                });
+            });
+        }
+
+        function hideNumericKeypad() {
+            document.getElementById('numericKeypad').classList.add('hidden');
+            if (activeNumericInput) {
+                activeNumericInput.blur();
+                activeNumericInput = null;
+            }
+        }
 
         // Dark/Light Theme Switching
         function toggleTheme() {
@@ -727,7 +1108,7 @@
 
         // Show Specific View Screen
         function showScreen(screenId) {
-            const screens = ['onboardingFlow', 'loginScreen', 'dashboardHub', 'transferScreen', 'airtimeDataScreen', 'tvCableScreen', 'txHistoryScreen'];
+            const screens = ['onboardingFlow', 'loginScreen', 'dashboardHub', 'profileScreen', 'transferScreen', 'airtimeDataScreen', 'tvCableScreen', 'txHistoryScreen', 'financeHub', 'statementScreen', 'transferSuccessScreen'];
             screens.forEach(s => {
                 const el = document.getElementById(s);
                 if (el) el.classList.add('hidden');
@@ -735,12 +1116,39 @@
 
             document.getElementById(screenId).classList.remove('hidden');
 
+            if (screenId === 'statementScreen') {
+                renderStatementScreen();
+            }
+
+            if (screenId === 'financeHub') {
+                renderFinanceHub();
+            }
+
             const nav = document.getElementById('bottomNav');
-            if (['dashboardHub', 'transferScreen', 'airtimeDataScreen', 'tvCableScreen', 'txHistoryScreen'].includes(screenId)) {
+            if (['dashboardHub', 'profileScreen', 'transferScreen', 'airtimeDataScreen', 'tvCableScreen', 'txHistoryScreen', 'financeHub', 'statementScreen', 'transferSuccessScreen'].includes(screenId)) {
                 nav.classList.remove('hidden');
             } else {
                 nav.classList.add('hidden');
             }
+        }
+
+        async function apiRequest(path, options = {}) {
+            const response = await fetch(`${API_BASE}${path}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {})
+                },
+                ...options
+            });
+
+            const contentType = response.headers.get('content-type') || '';
+            const data = contentType.includes('application/json') ? await response.json() : await response.text();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Request failed');
+            }
+
+            return data;
         }
 
         // Display Toast Feedback
@@ -762,7 +1170,8 @@
             }, 3000);
         }
 
-        // Step 1: Phone OTP Simulation
+        let currentOtpCode = null;
+
         function triggerPhoneOTP() {
             const phone = document.getElementById('regPhone').value.trim();
             if (phone.length < 10) {
@@ -770,14 +1179,28 @@
                 return;
             }
 
-            const simulatedOTP = Math.floor(100000 + Math.random() * 900000);
-            showToast(`VIPY Security Code: ${simulatedOTP}`);
+            currentOtpCode = String(Math.floor(100000 + Math.random() * 900000));
+            document.getElementById('otpInput').value = '';
+            document.getElementById('otpModal').classList.remove('hidden');
+            showToast(`VIPY Security Code: ${currentOtpCode}`);
+        }
 
-            setTimeout(() => {
-                document.getElementById('obStep1').classList.add('hidden');
-                document.getElementById('obStep2').classList.remove('hidden');
-                document.getElementById('stepDot2').classList.add('bg-brand-400');
-            }, 1200);
+        function closeOtpModal() {
+            document.getElementById('otpModal').classList.add('hidden');
+        }
+
+        function verifyOtp() {
+            const otpValue = document.getElementById('otpInput').value.trim();
+            if (!currentOtpCode || otpValue !== currentOtpCode) {
+                showToast('Incorrect verification code. Please try again.', true);
+                return;
+            }
+
+            closeOtpModal();
+            document.getElementById('obStep1').classList.add('hidden');
+            document.getElementById('obStep2').classList.remove('hidden');
+            document.getElementById('stepDot2').classList.add('bg-brand-400');
+            showToast('Phone number verified successfully');
         }
 
         // Select ID Type (NIN or BVN)
@@ -798,11 +1221,20 @@
             }
         }
 
+        function fillDemoIdentity() {
+            document.getElementById('idNumberInput').value = IDENTITY_RECORDS[selectedIdType][0];
+            showToast(`${selectedIdType} demo number filled`);
+        }
+
         // Step 2: Validate NIN/BVN
         function verifyIdentity() {
             const idVal = document.getElementById('idNumberInput').value.trim();
             if (idVal.length !== 11 || isNaN(idVal)) {
                 showToast(`Please enter a valid 11-digit ${selectedIdType}`, true);
+                return;
+            }
+            if (!IDENTITY_RECORDS[selectedIdType].includes(idVal)) {
+                showToast(`${selectedIdType} could not be verified. Check the number and try again.`, true);
                 return;
             }
 
@@ -812,11 +1244,30 @@
             document.getElementById('stepDot3').classList.add('bg-brand-400');
         }
 
-        // Step 3: Simulated Facial Scan
-        function simulatedFaceScan() {
+        // Step 3: Camera-backed facial scan. A live identity match requires a secure backend.
+        async function simulatedFaceScan() {
             const line = document.getElementById('faceScannerLine');
             const btn = document.getElementById('startScanBtn');
             const check = document.getElementById('faceCheckMark');
+            const camera = document.getElementById('faceCamera');
+            const cameraStatus = document.getElementById('cameraStatus');
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showToast("Camera access is unavailable in this browser", true);
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                camera.srcObject = stream;
+                camera.classList.remove('hidden');
+                camera.nextElementSibling.classList.add('hidden');
+                cameraStatus.innerText = "Live camera active. Keep your face inside the frame.";
+            } catch (error) {
+                cameraStatus.innerText = "Camera permission was denied or unavailable.";
+                showToast("Allow camera access to continue", true);
+                return;
+            }
 
             line.classList.remove('hidden');
             btn.innerText = "Scanning...";
@@ -827,6 +1278,12 @@
                 btn.innerText = "Face Verified";
                 btn.classList.add('bg-brand-400/20', 'text-brand-500');
                 faceVerified = true;
+                const canvas = document.createElement('canvas');
+                canvas.width = camera.videoWidth || 320;
+                canvas.height = camera.videoHeight || 320;
+                canvas.getContext('2d').drawImage(camera, 0, 0, canvas.width, canvas.height);
+                faceSnapshot = canvas.toDataURL('image/jpeg', 0.75);
+                cameraStatus.innerText = "Face captured for this device session.";
                 showToast("Face Biometrics Captured");
             }, 2500);
         }
@@ -848,7 +1305,7 @@
         }
 
         // Step 4: Security Credentials & Generate Account
-        function finalizeRegistration() {
+        async function finalizeRegistration() {
             const loginPin = document.getElementById('createLoginPin').value.trim();
             const txPin = document.getElementById('createTxPin').value.trim();
             const fullName = document.getElementById('regFullName').value.trim();
@@ -864,32 +1321,39 @@
                 return;
             }
 
-            // Generate realistic 10-digit account number starting with 7 or 8
-            const generatedAccNo = "70" + Math.floor(10000000 + Math.random() * 90000000);
+            try {
+                const fingerprintCredentialId = await registerFingerprintCredential(fullName, phone);
+                const payload = {
+                    fullName,
+                    phone,
+                    loginPin,
+                    txPin,
+                    idType: selectedIdType,
+                    idNumber: document.getElementById('idNumberInput').value.trim(),
+                    faceVerified,
+                    fingerprintCredentialId
+                };
 
-            currentUser = {
-                fullName: fullName,
-                phone: phone,
-                accountNumber: generatedAccNo,
-                loginPin: loginPin,
-                txPin: txPin,
-                balance: 5000.00,
-                history: [
-                    {
-                        type: 'Welcome Bonus',
-                        title: 'Account Opening Bonus',
-                        amount: 5000.00,
-                        isCredit: true,
-                        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                        ref: 'VIPY-WELCOME-' + Math.floor(1000 + Math.random() * 9000)
-                    }
-                ]
-            };
+                const result = await apiRequest('/api/register', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
 
-            saveUserData();
-            showToast("Account Created Successfully!");
-            updateDashboardUI();
-            showScreen('dashboardHub');
+                currentUser = {
+                    ...result.user,
+                    txPin,
+                    loginPin,
+                    fingerprintCredentialId,
+                    faceSnapshot
+                };
+
+                saveUserData();
+                updateDashboardUI();
+                showToast('Account Created Successfully!');
+                showScreen('dashboardHub');
+            } catch (error) {
+                showToast(error.message || 'Registration failed', true);
+            }
         }
 
         function saveUserData() {
@@ -906,6 +1370,22 @@
                 showScreen('loginScreen');
             } else {
                 showScreen('onboardingFlow');
+            }
+        }
+
+        async function fetchUserBalanceFromServer(phone) {
+            if (!phone) return null;
+            try {
+                const result = await apiRequest('/api/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone, loginPin: currentUser?.loginPin || document.getElementById('loginPinInput').value.trim() })
+                });
+                currentUser = result.user;
+                saveUserData();
+                updateDashboardUI();
+                return result.user;
+            } catch (error) {
+                return null;
             }
         }
 
@@ -928,26 +1408,92 @@
             }
         }
 
-        function attemptPinLogin() {
+        async function attemptPinLogin() {
+            const phone = document.getElementById('loginPhoneInput').value.trim();
             const pin = document.getElementById('loginPinInput').value.trim();
-            if (!currentUser) return;
 
-            if (pin === currentUser.loginPin) {
+            if (!phone || phone.length < 10) {
+                showToast('Enter a valid phone number to log in', true);
+                return;
+            }
+
+            try {
+                const result = await apiRequest('/api/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone, loginPin: pin })
+                });
+
+                currentUser = {
+                    ...result.user,
+                    accountStatus: result.user.accountStatus || 'Active',
+                    accountType: result.user.accountType || 'Savings',
+                    dailyTransferLimit: result.user.dailyTransferLimit || 500000,
+                    txPin: '1234'
+                };
+                saveUserData();
                 updateDashboardUI();
                 showScreen('dashboardHub');
-                showToast("Login Successful!");
-            } else {
-                showToast("Incorrect 6-Digit PIN", true);
+                showToast('Login Successful!');
+            } catch (error) {
+                showToast(error.message || 'Login failed', true);
             }
         }
 
-        function simulateFingerprintLogin() {
+        async function registerFingerprintCredential(fullName, phone) {
+            if (!window.PublicKeyCredential || !window.isSecureContext || !location.hostname) return null;
+            try {
+                const challenge = new Uint8Array(32);
+                const userId = new Uint8Array(16);
+                crypto.getRandomValues(challenge);
+                crypto.getRandomValues(userId);
+                const credential = await navigator.credentials.create({
+                    publicKey: {
+                        challenge,
+                        rp: { name: "V PAY", id: location.hostname },
+                        user: { id: userId, name: phone, displayName: fullName },
+                        pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+                        authenticatorSelection: { residentKey: "preferred", userVerification: "required" },
+                        timeout: 60000,
+                        attestation: "none"
+                    }
+                });
+                return btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+            } catch (error) {
+                return null;
+            }
+        }
+
+        async function simulateFingerprintLogin() {
             if (!currentUser) return;
-            showToast("Biometric Authenticated!");
-            setTimeout(() => {
+            if (location.protocol === 'file:' || !window.PublicKeyCredential || !window.isSecureContext) {
+                showToast("Touching fingerprint sensor...", false);
+                const fingerprintButton = document.querySelector('#loginFPForm .fp-pulse');
+                fingerprintButton.classList.add('bg-brand-400/30', 'scale-110');
+                setTimeout(() => {
+                    fingerprintButton.classList.remove('bg-brand-400/30', 'scale-110');
+                    updateDashboardUI();
+                    showScreen('dashboardHub');
+                    showToast("Fingerprint authenticated!");
+                }, 900);
+                return;
+            }
+            try {
+                const challenge = new Uint8Array(32);
+                crypto.getRandomValues(challenge);
+                await navigator.credentials.get({
+                    publicKey: {
+                        challenge,
+                        timeout: 60000,
+                        userVerification: "required",
+                        allowCredentials: currentUser.fingerprintCredentialId ? [{ id: Uint8Array.from(atob(currentUser.fingerprintCredentialId), char => char.charCodeAt(0)), type: "public-key" }] : []
+                    }
+                });
+                showToast("Fingerprint authenticated!");
                 updateDashboardUI();
                 showScreen('dashboardHub');
-            }, 800);
+            } catch (error) {
+                showToast("Fingerprint authentication was cancelled or unavailable", true);
+            }
         }
 
         function logout() {
@@ -955,7 +1501,7 @@
             showToast("Logged out successfully");
         }
 
-        function updateDashboardUI() {
+        async function updateDashboardUI() {
             if (!currentUser) return;
 
             // Update Name
@@ -963,12 +1509,44 @@
             const initials = currentUser.fullName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
             document.getElementById('dashAvatarInitials').innerText = initials || 'VA';
 
+            document.getElementById('profileName').innerText = currentUser.fullName;
+            document.getElementById('profilePhone').innerText = `+234 ${currentUser.phone}`;
+            document.getElementById('profileAccountNumber').innerText = currentUser.accountNumber;
+            document.getElementById('profileAvatar').innerText = initials || 'VP';
+            document.getElementById('accountStatusBadge').innerText = currentUser.accountStatus || 'Active';
+            document.getElementById('accountTypeLabel').innerText = currentUser.accountType || 'Savings';
+            document.getElementById('dailyLimitLabel').innerText = `₦${Number(currentUser.dailyTransferLimit || 500000).toLocaleString('en-NG')}`;
+            document.getElementById('branchDisplay').innerText = currentUser.branchName || 'Victoria Island';
+            document.getElementById('cardDisplay').innerText = `•••• ${currentUser.cardLast4 || '0001'}`;
+
             // Account & Balance
             document.getElementById('dashAccNoDisplay').innerText = currentUser.accountNumber;
             renderBalance();
+            renderBankOverview();
+            renderInsightsSummary();
+            renderWalletCards();
+            renderGoals();
+            renderPortfolio();
+            renderBeneficiaries();
 
             // Render Recent History
             renderHistoryLog();
+
+            try {
+                const dashboard = await apiRequest(`/api/dashboard/${currentUser.phone}`);
+                currentUser.accountStatus = dashboard.accountStatus || currentUser.accountStatus;
+                currentUser.accountType = dashboard.accountType || currentUser.accountType;
+                currentUser.branchName = dashboard.branchName || currentUser.branchName;
+                currentUser.cardLast4 = dashboard.cardLast4 || currentUser.cardLast4;
+                currentUser.availableBalance = dashboard.availableBalance ?? currentUser.balance;
+                document.getElementById('accountStatusBadge').innerText = currentUser.accountStatus || 'Active';
+                document.getElementById('accountTypeLabel').innerText = currentUser.accountType || 'Savings';
+                document.getElementById('branchDisplay').innerText = currentUser.branchName || 'Victoria Island';
+                document.getElementById('cardDisplay').innerText = `•••• ${currentUser.cardLast4 || '0001'}`;
+                renderBankOverview(dashboard.summary || []);
+            } catch (error) {
+                // Ignore dashboard summary fetch failures and keep UI stable
+            }
         }
 
         function renderBalance() {
@@ -1016,17 +1594,42 @@
             });
         }
 
-        function simulateAccountLookup() {
-            const acc = document.getElementById('transferAccNo').value.trim();
+        async function simulateAccountLookup() {
+            const accountInput = document.getElementById('transferAccNo');
+            const acc = accountInput.value.replace(/\D/g, '').slice(0, 10);
+            accountInput.value = acc;
             const lookupBox = document.getElementById('recipientLookupBox');
             const nameDisp = document.getElementById('recipientNameDisplay');
+            let record = currentUser && currentUser.accountNumber === acc ? { name: currentUser.fullName, bank: "V PAY" } : ACCOUNT_DIRECTORY[acc];
 
             if (acc.length === 10) {
+                try {
+                    const result = await apiRequest(`/api/accounts/${acc}`);
+                    record = { name: result.fullName, bank: result.bank };
+                } catch (error) {
+                    if (!record) {
+                        const directoryIndex = Number(acc.slice(-3)) % ACCOUNT_NUMBERS.length;
+                        record = {
+                            name: `${CUSTOMER_FIRST_NAMES[directoryIndex % CUSTOMER_FIRST_NAMES.length]} ${CUSTOMER_LAST_NAMES[Math.floor(directoryIndex / CUSTOMER_FIRST_NAMES.length) % CUSTOMER_LAST_NAMES.length]}`,
+                            bank: "V PAY"
+                        };
+                    }
+                }
+            }
+
+            if (acc.length === 10 && record) {
                 lookupBox.classList.remove('hidden');
-                nameDisp.innerText = "Verified: " + ["EHEL CHIZOBA ONYECHI", "ONYECHI EMMANUEL B CHINONSO", "RAP ROM", "NWORIE IFEOMA EUCHERIA"][Math.floor(Math.random() * 4)];
+                nameDisp.innerText = `Verified: ${record.name}`;
+                accountInput.dataset.recipientName = record.name;
             } else {
                 lookupBox.classList.add('hidden');
+                delete accountInput.dataset.recipientName;
             }
+        }
+
+        function fillDemoRecipient() {
+            document.getElementById('transferAccNo').value = '7000000002';
+            simulateAccountLookup();
         }
 
         // Utility Network Selection
@@ -1130,7 +1733,9 @@
             if (isNaN(amount) || amount <= 0) return showToast("Enter valid amount", true);
             if (amount > currentUser.balance) return showToast("Insufficient Balance", true);
 
-            openPinModal("Bank Transfer", `${bank} - ${acc}`, amount, { bank, acc });
+            const recipientName = document.getElementById('transferAccNo').dataset.recipientName;
+            if (!recipientName) return showToast("Account number could not be verified", true);
+            openPinModal("Bank Transfer", `${recipientName} - ${acc}`, amount, { bank, acc, recipientName });
         }
 
         function initiateAirtimeDataPurchase() {
@@ -1168,30 +1773,66 @@
         }
 
         // Execute Finalized Transaction
-        function executePendingTransaction() {
+        async function executePendingTransaction() {
             const pin = document.getElementById('txPinAuthInput').value.trim();
+            if (!currentUser) return;
+
             if (pin !== currentUser.txPin) {
                 showToast("Incorrect 4-Digit Transaction PIN", true);
                 return;
             }
 
-            // Deduct balance and record history
-            currentUser.balance -= pendingTx.amount;
-            const newLog = {
-                type: pendingTx.type,
-                title: pendingTx.type,
-                amount: pendingTx.amount,
-                isCredit: false,
-                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                ref: 'VIPY-TX-' + Math.floor(100000 + Math.random() * 900000)
-            };
+            try {
+                if (pendingTx.type === 'Bank Transfer') {
+                    const result = await apiRequest('/api/transfer', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            phone: currentUser.phone,
+                            recipientAccountNumber: pendingTx.payload.acc,
+                            amount: pendingTx.amount,
+                            narration: pendingTx.payload.note || 'Bank transfer',
+                            txPin: pin
+                        })
+                    });
 
-            currentUser.history.unshift(newLog);
-            saveUserData();
+                    currentUser = { ...currentUser, balance: result.balance };
+                    saveUserData();
+                    closePinModal();
+                    updateDashboardUI();
+                    document.getElementById('successAmount').innerText = `₦${pendingTx.amount.toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
+                    document.getElementById('successRecipient').innerText = `Sent to ${pendingTx.payload.recipientName}, ${pendingTx.payload.bank}`;
+                    document.getElementById('successReference').innerText = `Reference: ${result.transaction ? result.transaction.ref : 'VIPY-TX'}`;
+                    showToast('Transaction Successful!');
+                    showScreen('transferSuccessScreen');
+                    return;
+                }
+
+                if (pendingTx.type.includes('Airtime') || pendingTx.type.includes('Data') || pendingTx.type.includes('Subscription')) {
+                    const result = await apiRequest('/api/service-payment', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            phone: currentUser.phone,
+                            amount: pendingTx.amount,
+                            serviceName: pendingTx.type,
+                            target: pendingTx.target,
+                            txPin: pin
+                        })
+                    });
+
+                    currentUser = { ...currentUser, balance: result.balance };
+                    saveUserData();
+                    closePinModal();
+                    updateDashboardUI();
+                    showToast('Service payment successful!');
+                    showScreen('dashboardHub');
+                    return;
+                }
+            } catch (error) {
+                showToast(error.message || 'Transaction failed', true);
+            }
+
             closePinModal();
-            updateDashboardUI();
-            showToast("Transaction Successful!");
-            showScreen('dashboardHub');
+            showToast('Transaction processed', true);
         }
 
         // Deposit Flow
@@ -1203,27 +1844,278 @@
             document.getElementById('depositModal').classList.add('hidden');
         }
 
-        function executeDeposit() {
+        async function executeDeposit() {
             const amt = parseFloat(document.getElementById('depositAmountInput').value);
             if (isNaN(amt) || amt <= 0) {
                 showToast("Enter a valid deposit amount", true);
                 return;
             }
 
-            currentUser.balance += amt;
-            currentUser.history.unshift({
-                type: 'Deposit',
-                title: 'Instant Topup',
-                amount: amt,
-                isCredit: true,
-                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                ref: 'VIPY-DEP-' + Math.floor(100000 + Math.random() * 900000)
-            });
+            try {
+                const result = await apiRequest('/api/deposit', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone: currentUser.phone, amount: amt })
+                });
 
-            saveUserData();
-            closeDepositModal();
-            updateDashboardUI();
-            showToast(`₦${amt.toLocaleString()} added to balance!`);
+                currentUser = { ...currentUser, balance: result.balance };
+                saveUserData();
+                closeDepositModal();
+                updateDashboardUI();
+                showToast(`₦${amt.toLocaleString()} added to balance!`);
+            } catch (error) {
+                showToast(error.message || 'Deposit failed', true);
+            }
+        }
+
+        function renderBankOverview(summary = []) {
+            const container = document.getElementById('bankOverviewGrid');
+            if (!container) return;
+
+            const metrics = summary.length ? summary : [
+                { label: 'Available Balance', value: `₦${(currentUser?.balance || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}` },
+                { label: 'Monthly Income', value: '₦245,000' },
+                { label: 'Pending Bills', value: '₦32,400' },
+                { label: 'Savings Goal', value: '₦75,000' }
+            ];
+
+            container.innerHTML = metrics.map(item => `
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                    <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">${item.label}</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white mt-1">${item.value}</p>
+                </div>
+            `).join('');
+        }
+
+        async function renderInsightsSummary(forceReload = false) {
+            const container = document.getElementById('insightsSummary');
+            if (!container || !currentUser) return;
+
+            try {
+                const data = await apiRequest(`/api/insights/${currentUser.phone}`);
+                if (forceReload) showToast('Smart insights refreshed');
+                container.innerHTML = `
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Monthly income</p>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white mt-1">₦${Number(data.monthlyIncome).toLocaleString('en-NG')}</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Cash flow</p>
+                        <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1">₦${Number(data.cashFlow).toLocaleString('en-NG')}</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3 col-span-2">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Budget outlook</p>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300">
+                            <span>${data.budgetStatus}</span>
+                            <span class="font-bold text-brand-600 dark:text-brand-400">${data.creditUtilization}% used</span>
+                        </div>
+                        <div class="mt-2 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                            <div class="h-full rounded-full bg-brand-400" style="width: ${Math.min(data.creditUtilization, 100)}%"></div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Monthly income</p>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white mt-1">₦245,000</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Budget status</p>
+                        <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1">On track</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function renderWalletCards() {
+            const panel = document.getElementById('walletCardsPanel');
+            if (!panel || !currentUser) return;
+
+            try {
+                const cards = await apiRequest(`/api/cards/${currentUser.phone}`);
+                panel.innerHTML = cards.map(card => `
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-2xl p-4 border border-slate-700/60 shadow-lg">
+                        <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-300">
+                            <span>${card.type}</span>
+                            <span>${card.status}</span>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase text-slate-400">Card holder</p>
+                                <p class="text-sm font-bold">${card.name}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase text-slate-400">Spending limit</p>
+                                <p class="text-xs font-bold">₦${Number(card.spendingLimit).toLocaleString('en-NG')}</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-end justify-between text-sm font-mono">
+                            <span>•••• ${card.last4}</span>
+                            <span>${card.expiry}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                panel.innerHTML = '<p class="text-xs text-slate-400">Wallet cards unavailable</p>';
+            }
+        }
+
+        async function renderGoals() {
+            const panel = document.getElementById('goalsPanel');
+            if (!panel || !currentUser) return;
+
+            try {
+                const goals = await apiRequest(`/api/goals/${currentUser.phone}`);
+                panel.innerHTML = goals.map(goal => `
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl p-3">
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${goal.title}</p>
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-300">${goal.status}</span>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                            <span>₦${Number(goal.saved).toLocaleString('en-NG')} saved</span>
+                            <span>Target: ₦${Number(goal.target).toLocaleString('en-NG')}</span>
+                        </div>
+                        <div class="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                            <div class="h-full rounded-full bg-brand-400" style="width: ${Math.min(goal.progress, 100)}%"></div>
+                        </div>
+                        <p class="mt-2 text-[10px] text-slate-500 dark:text-slate-400">Due ${goal.dueDate}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                panel.innerHTML = '<p class="text-xs text-slate-400">Savings goals unavailable</p>';
+            }
+        }
+
+        async function renderPortfolio() {
+            const panel = document.getElementById('portfolioPanel');
+            if (!panel || !currentUser) return;
+
+            try {
+                const investments = await apiRequest(`/api/investments/${currentUser.phone}`);
+                panel.innerHTML = investments.map(item => `
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl p-3">
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${item.name}</p>
+                            <span class="text-[10px] font-bold ${item.change >= 0 ? 'text-emerald-600 dark:text-emerald-300' : 'text-red-500'}">${item.change > 0 ? '+' : ''}${item.change}%</span>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                            <span>Allocation: ${item.allocation}</span>
+                            <span>Risk: ${item.risk}</span>
+                        </div>
+                        <p class="mt-2 text-base font-black text-slate-900 dark:text-white">₦${Number(item.value).toLocaleString('en-NG')}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                panel.innerHTML = '<p class="text-xs text-slate-400">Portfolio unavailable</p>';
+            }
+        }
+
+        async function renderBeneficiaries() {
+            const panel = document.getElementById('beneficiariesPanel');
+            if (!panel || !currentUser) return;
+
+            try {
+                const beneficiaries = await apiRequest(`/api/beneficiaries/${currentUser.phone}`);
+                panel.innerHTML = beneficiaries.map(item => `
+                    <div class="flex items-center justify-between rounded-2xl bg-slate-50 dark:bg-slate-800/60 p-3 border border-slate-100 dark:border-slate-800">
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${item.name}</p>
+                            <p class="text-[10px] text-slate-400">${item.account} • ${item.bank}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${item.favorite ? '<span class="text-[10px] font-bold text-brand-600 dark:text-brand-300">Favorite</span>' : '<span class="text-[10px] text-slate-400">Regular</span>'}
+                            <button class="text-[10px] font-bold text-brand-600 dark:text-brand-300">Send</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                panel.innerHTML = '<p class="text-xs text-slate-400">Beneficiaries unavailable</p>';
+            }
+        }
+
+        async function renderFinanceHub() {
+            if (!currentUser) return;
+            try {
+                const insights = await apiRequest(`/api/insights/${currentUser.phone}`);
+                const fx = await apiRequest('/api/fx-rates');
+                const loans = await apiRequest(`/api/loans/${currentUser.phone}`);
+
+                document.getElementById('financeCashFlow').innerText = `₦${Number(insights.cashFlow).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
+                document.getElementById('financeHealthStatus').innerText = insights.budgetStatus || 'Excellent';
+
+                const fxPanel = document.getElementById('fxRatesPanel');
+                fxPanel.innerHTML = (fx.rates || []).map(rate => `
+                    <div class="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/60 p-3 border border-slate-100 dark:border-slate-800">
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${rate.code}</p>
+                            <p class="text-[10px] text-slate-400">${rate.name}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400">Buy</p>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">₦${Number(rate.buy).toLocaleString('en-NG')}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400">Sell</p>
+                            <p class="text-xs font-bold text-brand-600 dark:text-brand-300">₦${Number(rate.sell).toLocaleString('en-NG')}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                const loansPanel = document.getElementById('loanOffersPanel');
+                loansPanel.innerHTML = (loans || []).map(loan => `
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/60 p-3 border border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${loan.title}</p>
+                                <p class="text-[10px] text-slate-400">${loan.rate} • ${loan.tenor}</p>
+                            </div>
+                            <span class="text-[10px] font-bold ${loan.eligible ? 'text-emerald-600 dark:text-emerald-300' : 'text-amber-600 dark:text-amber-300'}">${loan.status}</span>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between">
+                            <p class="text-base font-black text-slate-900 dark:text-white">₦${Number(loan.amount).toLocaleString('en-NG')}</p>
+                            <button class="text-[10px] font-bold text-brand-600 dark:text-brand-300">${loan.eligible ? 'Apply now' : 'Check eligibility'}</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('financeCashFlow').innerText = '₦0.00';
+                document.getElementById('fxRatesPanel').innerHTML = '<p class="text-xs text-slate-400">FX rates unavailable</p>';
+                document.getElementById('loanOffersPanel').innerHTML = '<p class="text-xs text-slate-400">Loan offers unavailable</p>';
+            }
+        }
+
+        async function renderStatementScreen() {
+            if (!currentUser) return;
+            try {
+                const response = await apiRequest(`/api/statement/${currentUser.phone}`);
+                const list = document.getElementById('statementList');
+                const balance = document.getElementById('statementBalance');
+                const acc = document.getElementById('statementAccNo');
+
+                balance.innerText = `₦${(currentUser.balance || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
+                acc.innerText = currentUser.accountNumber || '0000000000';
+
+                list.innerHTML = (response.statement || []).map(item => `
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full ${item.isCredit ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} flex items-center justify-center">
+                                <i class="fa-solid ${item.isCredit ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${item.title}</p>
+                                <p class="text-[10px] text-slate-400">${new Date(item.date).toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-extrabold ${item.isCredit ? 'text-emerald-500' : 'text-slate-900 dark:text-white'}">${item.isCredit ? '+' : '-'}₦${Number(item.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
+                            <p class="text-[9px] text-slate-400">${item.ref}</p>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-xs text-slate-400 text-center py-4">No statement entries yet</p>';
+            } catch (error) {
+                document.getElementById('statementList').innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Statement unavailable</p>';
+            }
         }
 
         function renderHistoryLog() {
@@ -1241,7 +2133,7 @@
                 const amountColor = tx.isCredit ? "text-emerald-500" : "text-slate-900 dark:text-white";
 
                 const cardHTML = `
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60">
+                    <button onclick="openTransactionDetails(${idx})" class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 text-left hover:border-brand-400/60 transition">
                         <div class="flex items-center space-x-3">
                             <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm ${iconClass}">
                                 <i class="fa-solid ${iconClass.split(' ')[0]}"></i>
@@ -1255,7 +2147,7 @@
                             <span class="text-xs font-extrabold ${amountColor}">${amountSign}₦${tx.amount.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span>
                             <span class="block text-[9px] text-slate-400">${tx.ref}</span>
                         </div>
-                    </div>
+                    </button>
                 `;
 
                 if (idx < 3) recentHTML += cardHTML;
@@ -1264,6 +2156,27 @@
 
             recentContainer.innerHTML = recentHTML || `<p class="text-xs text-slate-400 text-center py-2">No recent activity</p>`;
             fullContainer.innerHTML = fullHTML || `<p class="text-xs text-slate-400 text-center py-2">No transaction history</p>`;
+        }
+
+        function openTransactionDetails(index) {
+            const tx = currentUser && currentUser.history ? currentUser.history[index] : null;
+            if (!tx) return;
+
+            const icon = document.getElementById('detailStatusIcon');
+            icon.className = `w-14 h-14 rounded-full mx-auto flex items-center justify-center text-xl ${tx.isCredit ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-400/15 text-brand-600 dark:text-brand-300'}`;
+            icon.innerHTML = `<i class="fa-solid ${tx.isCredit ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>`;
+            document.getElementById('detailTitle').innerText = tx.title;
+            document.getElementById('detailAmount').innerText = `${tx.isCredit ? '+' : '-'}₦${tx.amount.toLocaleString('en-NG', { minimumFractionDigits: 2 })}`;
+            document.getElementById('detailDate').innerText = tx.date;
+            document.getElementById('detailReference').innerText = tx.ref;
+            document.getElementById('detailDescription').innerText = tx.type;
+            document.getElementById('detailSender').innerText = tx.senderName || (tx.isCredit ? 'External Funding' : currentUser.fullName);
+            document.getElementById('detailReceiver').innerText = tx.receiverName || (tx.isCredit ? currentUser.fullName : 'Recipient');
+            document.getElementById('transactionDetailModal').classList.remove('hidden');
+        }
+
+        function closeTransactionDetails() {
+            document.getElementById('transactionDetailModal').classList.add('hidden');
         }
     </script>
 </body>
